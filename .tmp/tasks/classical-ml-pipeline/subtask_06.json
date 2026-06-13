@@ -1,0 +1,32 @@
+{
+  "id": "classical-ml-pipeline-06",
+  "seq": "06",
+  "title": "Create evaluate.py — classification metrics and confusion matrix",
+  "status": "pending",
+  "depends_on": ["04"],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "acceptance_criteria": [
+    "Loads trained models from train_classical.py and evaluates on held-out test set",
+    "Reports per-class precision, recall, and F1-score for both XGBoost and Random Forest",
+    "Generates and saves a confusion matrix plot to figures/confusion_matrix.png",
+    "Produces a per-class breakdown table printed to stdout",
+    "Macro and weighted F1 scores are calculated and displayed"
+  ],
+  "agent_id": null,
+  "started_at": null,
+  "completed_at": null,
+  "completion_summary": null,
+  "deliverables": [
+    "classical_ml/evaluate.py"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "classical-ml-pipeline",
+  "name": "Classical ML Pipeline for Exercise Classification",
+  "status": "active",
+  "objective": "Build a complete classical ML pipeline: load HDF5 sensor data, engineer features, train XGBoost/RF, augment, evaluate, extract SHAP insights, and scaffold a Transformer blueprint",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "exit_criteria": [
+    "All 9 component script files created in classical_ml/",
+    "Pipeline runs end-to-end without errors",
+    "Classification metrics (F1 >= 0.85 target) produced",
+    "Feature importance analysis with SHAP plots saved to figures/",
+    "Augmentation comparison table produced",
+    "Transformer blueprint scaffold exists"
+  ],
+  "subtask_count": 9,
+  "completed_count": 0,
+  "completed_at": null,
+  "created_at": "2026-06-13T00:00:00Z"
+}

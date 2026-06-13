@@ -1,0 +1,33 @@
+{
+  "id": "classical-ml-pipeline-05",
+  "seq": "05",
+  "title": "Create augmentation.py — data augmentation and retraining",
+  "status": "pending",
+  "depends_on": ["02"],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "acceptance_criteria": [
+    "Accepts windowed time-series data from windowing.py",
+    "Implements at least 4 augmentation techniques: additive Gaussian noise, time-warping, amplitude scaling, and sensor dropout",
+    "Augments each window stochastically with configurable probability",
+    "Retrains XGBoost and Random Forest on augmented training set",
+    "Compares augmented vs non-augmented performance and stores results",
+    "Returns augmented training data and a comparison summary"
+  ],
+  "agent_id": null,
+  "started_at": null,
+  "completed_at": null,
+  "completion_summary": null,
+  "deliverables": [
+    "classical_ml/augmentation.py"
+  ]
+}

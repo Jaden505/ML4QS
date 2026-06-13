@@ -1,0 +1,33 @@
+{
+  "id": "classical-ml-pipeline-08",
+  "seq": "08",
+  "title": "Create transformer_blueprint.py — PyTorch Transformer training scaffold",
+  "status": "pending",
+  "depends_on": ["01", "02"],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "acceptance_criteria": [
+    "Loads raw windowed sensor data from windowing.py (not feature-engineered data)",
+    "Defines a PyTorch Transformer model architecture with multi-head self-attention for time-series classification",
+    "Implements training loop with train/validation split, loss tracking, and epoch logging",
+    "Evaluates on the test participant and prints accuracy",
+    "Saves model checkpoint to classical_ml/transformer_checkpoint.pt",
+    "Script is structured as a reusable scaffold (main function with configurable hyperparameters)"
+  ],
+  "agent_id": null,
+  "started_at": null,
+  "completed_at": null,
+  "completion_summary": null,
+  "deliverables": [
+    "classical_ml/transformer_blueprint.py"
+  ]
+}

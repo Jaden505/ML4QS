@@ -1,0 +1,32 @@
+{
+  "id": "classical-ml-pipeline-03",
+  "seq": "03",
+  "title": "Create features.py — time-domain and frequency-domain feature extraction",
+  "status": "pending",
+  "depends_on": ["02"],
+  "parallel": false,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "acceptance_criteria": [
+    "Accepts windowed data (windows x channels) from windowing.py",
+    "Extracts time-domain features per window: mean, std, min, max, rms, skewness, kurtosis, zero-crossing rate, signal magnitude area",
+    "Extracts frequency-domain features per window: FFT peak frequency, spectral energy, spectral entropy, dominant frequency band ratios",
+    "Returns feature matrix of shape (num_windows, num_features) with meaningful column names",
+    "Feature engineering is vectorized (no per-window Python loops where avoidable)"
+  ],
+  "agent_id": null,
+  "started_at": null,
+  "completed_at": null,
+  "completion_summary": null,
+  "deliverables": [
+    "classical_ml/features.py"
+  ]
+}

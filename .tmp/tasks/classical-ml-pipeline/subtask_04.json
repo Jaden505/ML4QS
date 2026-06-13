@@ -1,0 +1,33 @@
+{
+  "id": "classical-ml-pipeline-04",
+  "seq": "04",
+  "title": "Create train_classical.py — XGBoost and Random Forest training",
+  "status": "pending",
+  "depends_on": ["03"],
+  "parallel": false,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "acceptance_criteria": [
+    "Splits data by PARTICIPANT (e.g., train on P1-P3, test on P4) for generalization testing",
+    "Trains both XGBoost and Random Forest classifiers with hyperparameter tuning (GridSearchCV or RandomizedSearchCV)",
+    "Evaluates models on held-out participant test set",
+    "Prints test accuracy and F1-score for both models",
+    "Saves trained models to disk (e.g., .joblib or .pkl files)",
+    "Installs xgboost if not already available"
+  ],
+  "agent_id": null,
+  "started_at": null,
+  "completed_at": null,
+  "completion_summary": null,
+  "deliverables": [
+    "classical_ml/train_classical.py"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "split_mode": "random",
+  "train_participants": "random_80pct",
+  "test_participants": "random_20pct",
+  "classes": [
+    "bicep_curl",
+    "jumping_jacks",
+    "shoulder_press"
+  ],
+  "X_train_shape": [
+    2099,
+    264
+  ],
+  "X_test_shape": [
+    525,
+    264
+  ],
+  "xgboost_params": {
+    "subsample": 1.0,
+    "n_estimators": 500,
+    "min_child_weight": 1,
+    "max_depth": 3,
+    "learning_rate": 0.2,
+    "gamma": 0.2,
+    "colsample_bytree": 1.0
+  },
+  "random_forest_params": {
+    "n_estimators": 500,
+    "min_samples_split": 2,
+    "min_samples_leaf": 1,
+    "max_features": "sqrt",
+    "max_depth": null,
+    "bootstrap": false
+  }
+}

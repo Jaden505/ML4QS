@@ -1,0 +1,33 @@
+{
+  "id": "classical-ml-pipeline-09",
+  "seq": "09",
+  "title": "Create run_pipeline.py — end-to-end pipeline orchestrator",
+  "status": "pending",
+  "depends_on": ["01", "02", "03", "04", "05", "06", "07", "08"],
+  "parallel": false,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "acceptance_criteria": [
+    "Imports and calls all 8 component scripts in correct order: load_data → windowing → features → train_classical → evaluate → feature_insights",
+    "Runs augmentation branch in parallel/integrated position after windowing",
+    "Runs transformer_blueprint after load_data + windowing",
+    "Prints pipeline progress at each stage with timing information",
+    "Handles errors gracefully with clear error messages per stage",
+    "End-to-end run completes without unhandled exceptions"
+  ],
+  "agent_id": null,
+  "started_at": null,
+  "completed_at": null,
+  "completion_summary": null,
+  "deliverables": [
+    "classical_ml/run_pipeline.py"
+  ]
+}

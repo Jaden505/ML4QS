@@ -1,0 +1,34 @@
+{
+  "id": "classical-ml-pipeline-07",
+  "seq": "07",
+  "title": "Create feature_insights.py — SHAP values and feature importance analysis",
+  "status": "pending",
+  "depends_on": ["04"],
+  "parallel": true,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "acceptance_criteria": [
+    "Loads trained XGBoost and Random Forest models from train_classical.py",
+    "Computes SHAP values for XGBoost model on the test set",
+    "Extracts and plots top-N most important features from Random Forest (feature_importances_)",
+    "Saves SHAP summary plot to figures/shap_summary.png",
+    "Saves RF feature importance bar chart to figures/rf_feature_importance.png",
+    "Prints top 10 features ranked by importance with their scores",
+    "Installs shap if not already available"
+  ],
+  "agent_id": null,
+  "started_at": null,
+  "completed_at": null,
+  "completion_summary": null,
+  "deliverables": [
+    "classical_ml/feature_insights.py"
+  ]
+}

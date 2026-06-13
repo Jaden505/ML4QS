@@ -1,4 +1,4 @@
-<!-- Context: project-intelligence/nav | Priority: high | Version: 1.2 | Updated: 2026-06-13 -->
+<!-- Context: project-intelligence/nav | Priority: high | Version: 1.0 | Updated: 2025-01-12 -->
 
 # Project Intelligence
 
@@ -20,8 +20,8 @@
 
 | What You Need | File | Description |
 |---------------|------|-------------|
-| Understand the "why" | `business-domain.md` | Assignment context, RQs, deadlines (v1.0) |
-| Understand the "how" | `technical-domain.md` | Python ML stack, sensors, models (v1.1) |
+| Understand the "why" | `business-domain.md` | Problem, users, value proposition |
+| Understand the "how" | `technical-domain.md` | Stack, architecture, integrations |
 | See the connection | `business-tech-bridge.md` | Business → technical mapping |
 | Know the context | `decisions-log.md` | Why decisions were made |
 | Current state | `living-notes.md` | Active issues and open questions |

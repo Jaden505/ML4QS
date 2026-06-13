@@ -1,88 +1,81 @@
-<!-- Context: project-intelligence/business | Priority: high | Version: 1.0 | Updated: 2025-01-12 -->
+<!-- Context: project-intelligence/business | Priority: critical | Version: 1.0 | Updated: 2026-06-13 -->
 
 # Business Domain
 
-> Document the business context, problems solved, and value created.
+**Purpose**: Assignment context, research questions, and project scope for the ML4QS course project.
+**Last Updated**: 2026-06-13
 
 ## Quick Reference
-
-- **Purpose**: Understand why this project exists
-- **Update When**: Business direction changes, new features shipped, pivot
-- **Audience**: Developers needing context, stakeholders, product team
+- **Course**: Machine Learning for the Quantified Self — Vrije Universiteit Amsterdam
+- **Project**: Transformer-Based Exercise Classification from Smartphone Inertial Sensors
+- **Team**: Ahmad Ramadan[2772756], Taro Schenk[2781210], Jaden van Rijswijk[2873146]
+- **Domain**: Human motion recognition / exercise classification from wearable sensors
 
 ## Project Identity
 
 ```
-Project Name: [Name]
-Tagline: [One-line description]
-Problem Statement: [What problem are we solving?]
-Solution: [How we're solving it]
+Project Name: Transformer-Based Exercise Classification
+Tagline: Classifying gym exercises from smartphone inertial sensor data using Transformers
+Problem: Can Transformer models outperform classical ML on exercise classification from phone sensors?
+Solution: Collect IMU data (accel/gyro/linear accel) → preprocessing → compare Transformer vs classical baselines
 ```
 
-## Target Users
+## Research Questions
 
-| User Segment | Who They Are | What They Need | Pain Points |
-|--------------|--------------|----------------|-------------|
-| [Primary] | [Description] | [Their needs] | [Their frustrations] |
-| [Secondary] | [Description] | [Their needs] | [Their frustrations] |
+| # | Research Question | Approach |
+|---|------------------|----------|
+| 1 | How effectively can Transformer models classify human motion exercises from smartphone inertial sensor data? | Train Transformer on windowed sensor data, compare with classical ML baselines |
+| 2 | Which sensor modality (accelerometer, gyroscope, or linear acceleration) carries the strongest signal for exercise classification? | Ablation study — train models with each sensor modality individually |
 
-## Value Proposition
+## Deliverables & Deadlines
 
-**For Users**:
-- [Key benefit 1]
-- [Key benefit 2]
-- [Key benefit 3]
+| Deadline | Date | Requirements | Length |
+|----------|------|-------------|--------|
+| **Intermediate 1** | 07/06/2026 23:59 | Points 1-3: Research question, data collection, noise removal & missing values | ≤5 pages |
+| **Intermediate 2** | 14/06/2026 23:59 | Points 4-5: Feature engineering, train/test setup, classical ML techniques | ≤5 pages |
+| **Final** | 21/06/2026 23:59 | Points 1-7: Full report incl. deep learning & critical reflection | ≤14 pages (excl. refs) |
 
-**For Business**:
-- [Key value 1]
-- [Key value 2]
+## Assignment Requirements (7 Points)
 
-## Success Metrics
+1. **RQ & Data** — Define clear research question, measurements, and target variable
+2. **Data Collection & EDA** — Collect data, exploratory analysis (cf. Chapter 2)
+3. **Noise & Missing Values** — Apply appropriate techniques (cf. Chapter 3)
+4. **Feature Engineering** — Engineer & analyze features (cf. Chapter 4)
+5. **Classical ML** — Train/test setup + classical ML techniques (cf. Chapter 7)
+6. **Deep Learning** — LSTM, TCN, or Transformer with temporal embedding (state-of-the-art)
+7. **Conclusion** — General conclusion and critical reflection
 
-| Metric | Definition | Target | Current |
-|--------|------------|--------|---------|
-| [Metric 1] | [What it measures] | [Goal] | [Actual] |
-| [Metric 2] | [What it measures] | [Goal] | [Actual] |
+## Success Criteria
 
-## Business Model (if applicable)
-
-```
-Revenue Model: [How the business makes money]
-Pricing Strategy: [If applicable]
-Unit Economics: [CAC, LTV, etc.]
-Market Position: [Where we fit in the market]
-```
+| Criterion | Definition |
+|-----------|-----------|
+| **Intermediate 1** | Pass/fail — must pass to continue |
+| **Intermediate 2** | Pass/fail — must pass to continue |
+| **Final Report** | Sufficient grade (combined with exam) |
+| **Evaluation** | Generalization-focused (e.g., across persons or new recordings, NOT random timepoint splits) |
 
 ## Key Stakeholders
 
-| Role | Name | Responsibility | Contact |
-|------|------|----------------|---------|
-| [Product Owner] | [Name] | [What they own] | [Contact] |
-| [Tech Lead] | [Name] | [What they own] | [Contact] |
-| [Business Lead] | [Name] | [What they own] | [Contact] |
+| Role | Name | Responsibility |
+|------|------|---------------|
+| Student | Ahmad Ramadan[2772756] | Team member |
+| Student | Taro Schenk[2781210] | Team member |
+| Student | Jaden van Rijswijk[2873146] | Team member |
+| Instructor | Mark Hoogendoorn | Course coordinator, author of ML4QS book |
+| TA | TBD | Provides weekly feedback on progress |
 
-## Roadmap Context
+## 📂 Codebase References
 
-**Current Focus**: [What we're working on now]
-**Next Milestone**: [Upcoming goal]
-**Long-term Vision**: [Where this is heading]
-
-## Business Constraints
-
-- [Constraint 1] - [Why it exists]
-- [Constraint 2] - [Why it exists]
-
-## Onboarding Checklist
-
-- [ ] Understand the problem statement
-- [ ] Identify target users and their needs
-- [ ] Know the key value proposition
-- [ ] Understand success metrics
-- [ ] Know who the stakeholders are
-- [ ] Understand current business constraints
+| File | Purpose |
+|------|---------|
+| `Chapters/` | Reference implementations from ML4QS book (Chapters 2-8) |
+| `Chapters/crowdsignals_ch*.py` | Chapter scripts with processing pipelines |
+| `Chapters/util/util.py` | Utility functions (normalize, distance, statistics) |
+| `Chapters/Chapter2/CreateDataset.py` | Dataset creation from sensor CSV files |
+| `pyproject.toml` | Python dependencies |
 
 ## Related Files
-
-- `technical-domain.md` - How this business need is solved technically
-- `business-tech-bridge.md` - Mapping between business and technical
-- `decisions-log.md` - Business decisions with context
+- `technical-domain.md` — Tech stack, sensors, models, data pipeline
+- `decisions-log.md` — Key decisions and rationale
+- `living-notes.md` — Active issues and open questions
+- `business-tech-bridge.md` — Business → technical mapping

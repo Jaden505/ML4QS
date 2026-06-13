@@ -1,0 +1,32 @@
+{
+  "id": "classical-ml-pipeline-02",
+  "seq": "02",
+  "title": "Create windowing.py — sliding window segmentation",
+  "status": "pending",
+  "depends_on": ["01"],
+  "parallel": false,
+  "suggested_agent": "CoderAgent",
+  "context_files": [
+    ".opencode/context/core/standards/code-quality.md",
+    ".opencode/context/project-intelligence/technical-domain.md",
+    ".opencode/context/project-intelligence/business-domain.md"
+  ],
+  "reference_files": [
+    "data/merged_interial_sensor_data.h5",
+    "pyproject.toml"
+  ],
+  "acceptance_criteria": [
+    "Accepts the resampled DataFrame from load_data.py as input",
+    "Creates sliding windows of 2.5 seconds (250 samples at 100 Hz) with 50% overlap (125-sample stride)",
+    "Output shape: (num_windows, num_channels) where num_channels = 9 (accel_x/y/z, gyro_x/y/z, lin_accel_x/y/z)",
+    "Each window is labeled with the corresponding exercise class",
+    "Handles edge cases (incomplete final window) by truncation or padding"
+  ],
+  "agent_id": null,
+  "started_at": null,
+  "completed_at": null,
+  "completion_summary": null,
+  "deliverables": [
+    "classical_ml/windowing.py"
+  ]
+}
