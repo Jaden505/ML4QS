@@ -9,7 +9,8 @@ from tqdm import tqdm
 
 SENSOR_CONFIG = [("accelerometer", "accel", 3), ("gyroscope", "gyro", 3), ("linear_accelerometer", "lin_accel", 3)]
 DATASET_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "merged_interial_sensor_data.h5"
-
+SENSOR_CHANNELS = ["accel_x", "accel_y", "accel_z", "gyro_x", "gyro_y", "gyro_z",
+                   "lin_accel_x", "lin_accel_y", "lin_accel_z"]
 
 def _discover_sessions(h5_file):
     """Find all (participant, exercise) pairs in the HDF5 file."""
@@ -38,6 +39,7 @@ def _read_sensor_data(sensor_group, uniform_time):
     return result
 
 
+
 def _load_session(h5_file, participant, exercise, target_fs=100.0):
     """Load and resample a single (participant, exercise) session."""
     accel_time = h5_file[f"{participant}/{exercise}/accelerometer"]["time_s"][:]
@@ -58,6 +60,16 @@ def _load_session(h5_file, participant, exercise, target_fs=100.0):
     return df
 
 
+def _normalize_per_participant(df, method="zscore"):
+    """Z-score normalize each sensor channel per participant to reduce device bias."""
+    result = df.copy()
+    for participant in df["participant"].unique():
+        for ch in SENSOR_CHANNELS:
+            vals = df.loc[df["participant"] == participant, ch]
+            result.loc[df["participant"] == participant, ch] = (vals - vals.mean()) / (vals.std() + 1e-8)
+    return result
+
+
 def load_data(h5_path=str(DATASET_PATH), target_fs=100.0):
     """Flatten HDF5 into a DataFrame with all sensor channels resampled to target_fs Hz."""
     if not Path(h5_path).exists():
@@ -70,6 +82,7 @@ def load_data(h5_path=str(DATASET_PATH), target_fs=100.0):
     result = pd.concat(frames, ignore_index=True)
     result.sort_values(["participant", "exercise", "timestamp"], inplace=True)
     result.reset_index(drop=True, inplace=True)
+    result = _normalize_per_participant(result, method="zscore")
     return result
 
 
