@@ -3,6 +3,7 @@
 import pickle, warnings
 from pathlib import Path
 import matplotlib
+from sklearn.model_selection import train_test_split
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
@@ -74,101 +75,35 @@ if __name__ == "__main__":
     from src.data.windowing import create_windows
     from src.features.features import extract_features, add_magnitude_features
     from src.train_classical import train_xgboost, train_random_forest
-    from sklearn.preprocessing import LabelEncoder
-
-    # Load and process data (same pipeline as train_classical.py)
+    from src.features.augmentation import augment_dataset
+    from src.evaluation.compare_groups import evaluate_per_participant
+    
     df = load_data()
-    windows, labels_arr, meta = create_windows(df)
-    feat_df, _ = extract_features(add_magnitude_features(windows), fs=100.0)
-    print(f"Feature matrix: {feat_df.shape}")
+    windows, labels, meta = create_windows(df)
 
-    # Prepare labels, features, and participant array
-    participants = sorted(np.unique(meta["participants"]))
-    class_names = sorted(np.unique(meta["exercises"]))
-    le = LabelEncoder()
-    y_all = le.fit_transform(meta["exercises"])
-    X_all = feat_df.values.astype(np.float32)
-    p_array = meta["participants"]
+    # Track original size before augmentation so we can replicate metadata
+    n_orig = len(windows)
+    windows, labels = augment_dataset(windows, labels, augment_factor=2, seed=42)
+    factor = len(windows) // n_orig  # e.g. 3 (original + 2 augmented copies)
 
-    print(f"Participants: {participants}")
-    print(f"Classes: {class_names}")
-    print(f"Total samples: {len(X_all)}\n")
+    # Augment metadata arrays to stay aligned with the multiplied windows
+    for key in ["participants", "exercises"]:
+        meta[key] = np.concatenate([meta[key]] * factor)
 
-    # Leave-one-participant-out evaluation
-    all_preds: dict[str, list[int]] = {"xgboost": [], "random_forest": []}
-    all_trues: dict[str, list[int]] = {"xgboost": [], "random_forest": []}
+    feat_df, feat_names = extract_features(add_magnitude_features(windows), fs=100.0)
 
-    for test_p in participants:
-        mask = p_array != test_p
-        X_tr, X_te = X_all[mask], X_all[~mask]
-        y_tr, y_te = y_all[mask], y_all[~mask]
-        print(f"{'='*60}")
-        print(f"  Hold-out participant: {test_p}")
-        print(f"  Train: {len(X_tr)} samples, Test: {len(X_te)} samples")
-        print(f"{'='*60}")
+    # Per-participant evaluation with augmented data
+    per_participant_df = evaluate_per_participant(feat_df, meta["exercises"],
+                                                   meta["participants"], search_iter=5)
 
-        for name, fn, iters in [("xgboost", train_xgboost, 20),
-                                 ("random_forest", train_random_forest, 10)]:
-            model, _ = fn(X_tr, y_tr, iters)
-            preds = model.predict(X_te)
-            all_preds[name].extend(preds.tolist())
-            all_trues[name].extend(y_te.tolist())
+    # Random-split evaluation with augmented data
+    X_train, X_test, y_train, y_test = train_test_split(
+        feat_df.values.astype(np.float32), labels, test_size=0.2,
+        random_state=42, stratify=labels)
 
-            report = classification_report(y_te, preds, target_names=class_names,
-                                            output_dict=True, zero_division=0)
-            print(f"\n  {name.upper()}:")
-            print(f"  {'Class':<20s} {'Prec':>8s} {'Rec':>8s} {'F1':>8s} {'Supp':>8s}")
-            print(f"  {'-'*52}")
-            for cls in class_names:
-                r = report[cls]
-                print(f"  {cls:<20s} {r['precision']:>8.3f} {r['recall']:>8.3f}"
-                      f" {r['f1-score']:>8.3f} {r['support']:>8.0f}")
-        print()
-
-    # Aggregate results across all folds
-    print(f"\n{'='*60}")
-    print("  AGGREGATED RESULTS (all held-out folds combined)")
-    print(f"{'='*60}")
-    results = {}
-    for name in ["xgboost", "random_forest"]:
-        y_true = np.array(all_trues[name])
-        y_pred = np.array(all_preds[name])
-        print(f"\n  {name.upper()}:")
-        print(f"  Accuracy: {accuracy_score(y_true, y_pred):.4f}"
-              f"  F1 (wgt): {f1_score(y_true, y_pred, average='weighted'):.4f}")
-        print(f"  {'Class':<20s} {'Prec':>8s} {'Rec':>8s} {'F1':>8s} {'Supp':>8s}")
-        print(f"  {'-'*52}")
-        report = classification_report(y_true, y_pred, target_names=class_names,
-                                        output_dict=True, zero_division=0)
-        for cls in class_names:
-            r = report[cls]
-            print(f"  {cls:<20s} {r['precision']:>8.3f} {r['recall']:>8.3f}"
-                  f" {r['f1-score']:>8.3f} {r['support']:>8.0f}")
-        results[name] = {"accuracy": accuracy_score(y_true, y_pred),
-                         "f1_weighted": f1_score(y_true, y_pred, average="weighted"),
-                         "f1_macro": f1_score(y_true, y_pred, average="macro")}
-
-    # Confusion matrices from aggregated (participant-aware) predictions
-    for name in ["xgboost", "random_forest"]:
-        y_true = np.array(all_trues[name])
-        y_pred = np.array(all_preds[name])
-        cm = confusion_matrix(y_true, y_pred, labels=range(len(class_names)))
-        fig, ax = plt.subplots(figsize=(6, 5))
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
-                    xticklabels=class_names, yticklabels=class_names, ax=ax)
-        ax.set_title(f"Confusion Matrix — {name.upper()} (participant-aware)")
-        ax.set_xlabel("Predicted")
-        ax.set_ylabel("True")
-        path = FIGURE_DIR / f"confusion_matrix_{name}_participant_aware.png"
-        fig.tight_layout()
-        fig.savefig(path, dpi=150)
-        plt.close(fig)
-        print(f"  Saved participant-aware confusion matrix: {path}")
-
-    print(f"\n{'='*60}")
-    print("  SUMMARY")
-    print(f"{'='*60}")
-    for model_name, metrics in results.items():
-        print(f"  {model_name}: Accuracy={metrics['accuracy']:.4f},"
-              f" F1 (weighted)={metrics['f1_weighted']:.4f},"
-              f" F1 (macro)={metrics['f1_macro']:.4f}")
+    xgb_model, _ = train_xgboost(X_train, y_train, search_iter=10)
+    models = {"xgboost": xgb_model}
+    unique_class_names = sorted(np.unique(meta["exercises"]))
+    evaluate_models(models, X_test, y_test, class_names=unique_class_names)
+    plot_confusion_matrices(models, X_test, y_test, class_names=unique_class_names)
+    
